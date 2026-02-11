@@ -1,53 +1,172 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Mock Test</title>
+<title>Create Account</title>
 <style>
 body{
 margin:0;
-font-family:sans-serif;
-background:linear-gradient(to right,#e0f7fa,#fce4ec);
+font-family:'Segoe UI',sans-serif;
+background:url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f') no-repeat center center/cover;
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
 }
-.card{
+
+.overlay{
+background:rgba(0,0,0,0.6);
+position:absolute;
+width:100%;
+height:100%;
+top:0;
+left:0;
+}
+
+.wrapper{
+position:relative;
+display:flex;
+width:750px;
 background:white;
-padding:40px;
-width:350px;
 border-radius:15px;
-text-align:center;
+overflow:hidden;
+z-index:1;
+box-shadow:0 15px 40px rgba(0,0,0,0.3);
 }
+
+.left{
+flex:1;
+background:#1e3a8a;
+color:white;
+padding:40px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.left h2{
+margin-bottom:15px;
+}
+
+.right{
+flex:1;
+padding:40px;
+}
+
 input{
 width:100%;
 padding:12px;
 margin:10px 0;
-border-radius:10px;
-border:1px solid #ddd;
+border-radius:8px;
+border:1px solid #ccc;
 }
+
 button{
 width:100%;
 padding:12px;
 margin-top:10px;
-background:#7c4dff;
-color:white;
 border:none;
-border-radius:10px;
+border-radius:8px;
+background:#1e3a8a;
+color:white;
+cursor:pointer;
 }
-.create{
-background:#f8bbd0;
-color:black;
+
+.hidden{
+display:none;
 }
+
+.timer{
+font-size:13px;
+color:red;
+margin-top:5px;
+}
+
 </style>
 </head>
+
 <body>
-<div class="card">
-<h2>Welcome Student</h2>
-<input type="text" placeholder="Username">
-<input type="password" placeholder="Password">
-<button>Login</button>
-<button class="create">Create Account</button>
+
+<div class="overlay"></div>
+
+<div class="wrapper">
+
+<div class="left">
+<h2>Join Mock Test Platform</h2>
+<p>Practice smarter for GATE & ESE exams with structured mock tests and performance analysis.</p>
 </div>
+
+<div class="right">
+<h3>Create Account</h3>
+
+<input type="text" id="contact" placeholder="Email ID / Mobile Number">
+<input type="password" placeholder="Create Password">
+
+<button onclick="sendOTP()">Send OTP</button>
+
+<div id="otpSection" class="hidden">
+<input type="text" id="otpInput" placeholder="Enter OTP">
+<div class="timer" id="timer"></div>
+<button onclick="verifyOTP()">Verify OTP</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let generatedOTP;
+let countdown;
+
+function sendOTP(){
+
+let contact=document.getElementById("contact").value;
+
+if(contact===""){
+alert("Please enter Email or Mobile Number");
+return;
+}
+
+generatedOTP=Math.floor(1000+Math.random()*9000);
+
+alert("Demo OTP: "+generatedOTP);
+
+document.getElementById("otpSection").style.display="block";
+
+startTimer();
+}
+
+function startTimer(){
+let timeLeft=60;
+document.getElementById("timer").innerText="OTP expires in 60 seconds";
+
+countdown=setInterval(function(){
+timeLeft--;
+document.getElementById("timer").innerText="OTP expires in "+timeLeft+" seconds";
+
+if(timeLeft<=0){
+clearInterval(countdown);
+document.getElementById("timer").innerText="OTP expired. Resend OTP.";
+generatedOTP=null;
+}
+},1000);
+}
+
+function verifyOTP(){
+
+let enteredOTP=document.getElementById("otpInput").value;
+
+if(enteredOTP==generatedOTP && generatedOTP!=null){
+alert("Registration Successful ✅");
+window.location.href="index.html";
+}
+else{
+alert("Invalid or Expired OTP ❌");
+}
+
+}
+
+</script>
+
 </body>
 </html>
